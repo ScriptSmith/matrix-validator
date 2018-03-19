@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Results</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css" />
+
+</head>
+<body>
+<div style="display: none;">
+    {{ errors }}
+</div>
+{% if 'headings' in data %}
+    <h2>Headings:</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Headings</th>
+            <th>Rows</th>
+        </tr>
+        </thead>
+        {% for heading in data['headings'] %}
+            <tr>
+                <td>{{ heading[0] }}</td>
+                <td>{{ heading[1] }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endif %}
+
+{% if 'rows' in data %}
+    <h2>Table:</h2>
+    <table>
+        {% for row in data['rows'] %}
+            <tr>
+                {% for col in row %}
+                    <td>{{ col }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+{% endif %}
+
+
+<h2>Data:</h2>
+<pre>
+    {{ data['string_data'] }}
+</pre>
+
+{% if 'rows' in data %}
+    <h2>Information:</h2>
+    <p>Number of nodes according to headings: {{ data['rows'][0]|length - 1 }}</p>
+    <p>Number of nodes according to rows: {{ data['rows']|length - 1 }}</p>
+    {% if 'sum_weights' in data %}
+        <p>Sum of edge weights: {{ data['sum_weights'] }}</p>
+    {% endif %}
+{% endif %}
+
+</body>
+</html>
