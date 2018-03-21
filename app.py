@@ -22,7 +22,7 @@ def analyse(file):
         errors += f"{e}\n"
 
     try:
-        headings = list(zip_longest(rows[0][1:], (row[0] for row in rows[1:])))
+        headings = list(zip_longest(rows[0][1:], (row[0] for row in rows[1:] if len(row) > 0)))
         data['headings'] = headings
     except FileNotFoundError as e:
         errors += f"{e}\n"
@@ -53,4 +53,4 @@ def hello_world():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
