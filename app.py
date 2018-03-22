@@ -1,9 +1,11 @@
-from flask import *
 from csv import reader
 from io import StringIO
 from itertools import zip_longest
 
+from flask import *
+
 app = Flask(__name__)
+
 
 def analyse(file):
     string_data = file.read().decode("utf-8")
@@ -18,23 +20,23 @@ def analyse(file):
     try:
         rows = [row for row in rdr]
         data['rows'] = rows
-    except Exception as e:
-        errors += f"{e}\n"
 
-    try:
-        headings = list(zip_longest(rows[0][1:], (row[0] for row in rows[1:] if len(row) > 0)))
-        data['headings'] = headings
-    except FileNotFoundError as e:
-        errors += f"{e}\n"
+        try:
+            headings = list(zip_longest(rows[0][1:], (row[0] for row in rows[1:] if len(row) > 0)))
+            data['headings'] = headings
+        except FileNotFoundError as e:
+            errors += f"{e}\n"
 
-    try:
-        sum_weights = sum(sum((int(col) for col in row[1:] if col)) for row in rows[1:])
-        data['sum_weights'] = sum_weights
+        try:
+            sum_weights = sum(sum((int(col) for col in row[1:] if col)) for row in rows[1:])
+            data['sum_weights'] = sum_weights
+        except Exception as e:
+            errors += f"{e}\n"
+
     except Exception as e:
         errors += f"{e}\n"
 
     return render_template("result.html", data=data, errors=errors)
-
 
 
 @app.route('/results', methods=['GET', 'POST'])
