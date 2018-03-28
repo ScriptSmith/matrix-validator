@@ -13,7 +13,7 @@ def analyse(file):
     data = {'string_data': string_data}
     errors = ""
     try:
-        rdr = reader(StringIO(string_data))
+        rdr = reader(StringIO(string_data, newline=None))
     except Exception as e:
         errors += f"{e}\n"
 
